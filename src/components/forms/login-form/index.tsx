@@ -14,11 +14,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui";
-
 import z from "zod";
-import { getUser } from "@/app/_actions";
+import { getUser, saveAccessToken } from "@/app/_actions";
+import { useState } from "react";
 
 const LogInForm = () => {
+  const [errMsg, setErrMsg] = useState("");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -36,7 +37,13 @@ const LogInForm = () => {
       password: values.password,
     });
 
-    console.log(user);
+    if (!user.username) {
+      setErrMsg("Invalid credentials");
+      return;
+    }
+
+    await saveAccessToken(user);
+    router.push("/home");
   };
 
   return (
@@ -71,6 +78,7 @@ const LogInForm = () => {
         <div className="flex gap-x-4 pt-3">
           <Button type="submit">Log in</Button>
         </div>
+        <div className="text-red-500 dark:text-inherit text-sm">{errMsg}</div>
       </form>
     </Form>
   );
