@@ -1,4 +1,5 @@
 import TerritoryList from "@/components/territory-list";
+import { cookies } from "next/headers";
 import { getTerritories } from "../_actions";
 
 export interface Territory {
@@ -7,11 +8,31 @@ export interface Territory {
   parent: string | null;
 }
 
-export type Data = {
-  data: Territory[];
-};
+export interface TreeNode {
+  id: string;
+  name: string;
+  parent: string | null;
+  children?: TreeNode[];
+}
 
 export default async function Home() {
-  const data: Data = await getTerritories();
-  return <TerritoryList data={data} />;
+  const tree = await getTerritories();
+  const cookieStore = cookies();
+  const user = cookieStore.get("ntzwlt-user");
+  const parsedUser = JSON.parse(user?.value ?? "");
+
+  return (
+    <main className="flex flex-col gap-y-4">
+      <div>
+        <h1 className="mt-4 text-xl">{`Hello, ${parsedUser.displayName}`}</h1>
+        <p className="text-sm">
+          below are the list of territories you requested!
+        </p>
+      </div>
+
+      <div className="flex pt-4 w-full">
+        <TerritoryList tree={tree} />
+      </div>
+    </main>
+  );
 }

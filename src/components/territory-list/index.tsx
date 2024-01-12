@@ -1,29 +1,67 @@
 "use client";
 
-import { Data } from "@/app/home/page";
-import { deleteAccessToken } from "@/app/_actions";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { TreeNode } from "@/app/home/page";
+import {
+  Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui";
+import { ChevronsUpDown } from "lucide-react";
 
-const TerritoryList = ({ data }: { data: Data }) => {
-  const router = useRouter();
+interface TreeNodeProps {
+  node: TreeNode;
+  level: number;
+}
 
-  const handleLogout = async () => {
-    await deleteAccessToken();
-    router.push("/");
+const TerritoryList = ({ tree }: { tree: TreeNode[] | string }) => {
+  return (
+    <div>
+      {typeof tree === "string" ? (
+        "There was a problem fetching the list"
+      ) : (
+        <div className="flex flex-col gap-y-2">
+          {tree.map((node) => (
+            <TreeNodeComponent key={node.id} node={node} level={0} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
+  const indentStyle = {
+    marginLeft: `${level * 20}px`, // Adjust the indentation as needed
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        {data.data.map((territory, index) => {
-          return <p key={index}>{territory.name}</p>;
-        })}
+    <Collapsible className="w-[200px] space-y-1">
+      <div className="flex items-center justify-between" style={indentStyle}>
+        <h4 className="text-sm font-semibold">{node.name}</h4>
+        {node.children && node.children.length > 0 ? (
+          <CollapsibleTrigger asChild>
+            <Button variant="ghost" size="sm" className="w-9 p-0">
+              <ChevronsUpDown className="h-4 w-4" />
+              <span className="sr-only">Toggle</span>
+            </Button>
+          </CollapsibleTrigger>
+        ) : (
+          <div className="w-9"></div>
+        )}
       </div>
-      <div>
-        <Button onClick={handleLogout}>Logout</Button>
-      </div>
-    </main>
+      {node.children && node.children.length > 0 && (
+        <CollapsibleContent className="space-y-1">
+          {node.children.map((childNode) => (
+            <TreeNodeComponent
+              key={childNode.id}
+              node={childNode}
+              level={level + 1}
+            />
+          ))}
+        </CollapsibleContent>
+      )}
+    </Collapsible>
   );
 };
 
