@@ -1,5 +1,6 @@
 "use server";
 
+import { User } from "@/components/forms/login-form";
 import axios from "axios";
 
 export async function getUser(credentials: {
@@ -36,11 +37,7 @@ export async function getTerritories() {
 
 import { cookies } from "next/headers";
 
-export async function saveAccessToken(data: {
-  username: string;
-  displayName: string;
-  roles: [];
-}) {
+export async function saveAccessToken(data: User) {
   cookies().set("ntzwlt-user", JSON.stringify(data));
 }
 

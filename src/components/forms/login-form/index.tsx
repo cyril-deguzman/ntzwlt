@@ -18,6 +18,12 @@ import z from "zod";
 import { getUser, saveAccessToken } from "@/app/_actions";
 import { useState } from "react";
 
+export interface User {
+  username: string;
+  displayName: string;
+  roles: string[];
+}
+
 const LogInForm = () => {
   const [errMsg, setErrMsg] = useState("");
   const router = useRouter();
@@ -32,17 +38,17 @@ const LogInForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     form.reset({ username: "", password: "" });
-    const user = await getUser({
+    const user: User | string = await getUser({
       username: values.username,
       password: values.password,
     });
 
-    if (!user.username) {
+    if (typeof user === "string") {
       setErrMsg("Invalid credentials");
       return;
     }
 
-    await saveAccessToken(user);
+    await saveAccessToken(user as User);
     router.push("/home");
   };
 
@@ -78,7 +84,7 @@ const LogInForm = () => {
         <div className="flex gap-x-4 pt-3">
           <Button type="submit">Log in</Button>
         </div>
-        <div className="text-red-500 dark:text-inherit text-sm">{errMsg}</div>
+        <div className="text-red-500 dark:text-red-800 text-sm">{errMsg}</div>
       </form>
     </Form>
   );

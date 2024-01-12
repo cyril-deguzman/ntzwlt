@@ -1,20 +1,17 @@
-"use client";
+import TerritoryList from "@/components/territory-list";
+import { getTerritories } from "../_actions";
 
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { deleteAccessToken } from "../_actions";
+export interface Territory {
+  id: string;
+  name: string;
+  parent: string | null;
+}
 
-export default function Home() {
-  const router = useRouter();
+export type Data = {
+  data: Territory[];
+};
 
-  const handleLogout = async () => {
-    await deleteAccessToken();
-    router.push("/");
-  };
-
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Button onClick={() => handleLogout()}>logout</Button>
-    </main>
-  );
+export default async function Home() {
+  const data: Data = await getTerritories();
+  return <TerritoryList data={data} />;
 }
