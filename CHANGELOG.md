@@ -9,6 +9,7 @@ NOTE: all lowercase and no ending punctuation marks
 
 ## Next release v1.0
 
+- [#7](https://github.com/cyril-deguzman/ntzwlt/issues/7) app(refactor): review whole app and refactor accordingly
 - [#6](https://github.com/cyril-deguzman/ntzwlt/issues/6) app(ui): create hierchical tree of territories
 - [#5](https://github.com/cyril-deguzman/ntzwlt/issues/5) app(feature): add territory list component and define type interfaces
 - [#4](https://github.com/cyril-deguzman/ntzwlt/issues/4) app(auth): add auth and guard routes

@@ -5,16 +5,17 @@ import { cookies } from "next/headers";
 import axios from "axios";
 import { TreeNode } from "./home/page";
 
+// TODO: Modularize per context
 // Auth Functions
 export async function getUser(credentials: {
   username: string;
   password: string;
 }) {
+  const login_url = process.env.LOGIN_REQ_URL;
+  if (!login_url) return "Invalid credentials";
+
   const response = await axios
-    .post(
-      "https://netzwelt-devtest.azurewebsites.net/Account/SignIn",
-      credentials
-    )
+    .post(login_url, credentials)
     .then((res) => {
       return res.data;
     })
@@ -36,8 +37,11 @@ export async function deleteAccessToken() {
 
 // Territory Functions
 export async function getTerritories() {
+  const territory_url = process.env.TERRITORY_REQ_URL;
+  if (!territory_url) return "A problem occurred fetching the list :<";
+
   const response = await axios
-    .get("https://netzwelt-devtest.azurewebsites.net/Territories/All")
+    .get(territory_url)
     .then((res) => {
       return res.data;
     })

@@ -1,6 +1,6 @@
-import TerritoryList from "@/components/territory-list";
 import { cookies } from "next/headers";
 import { getTerritories } from "../_actions";
+import TerritoryList from "@/components/territory-list";
 
 export interface Territory {
   id: string;
@@ -31,7 +31,11 @@ export default async function Home() {
       </div>
 
       <div className="flex pt-4 w-full">
-        <TerritoryList tree={tree} />
+        {typeof tree === "string" ? (
+          <div>{tree}</div>
+        ) : (
+          <TerritoryList tree={tree} />
+        )}
       </div>
     </main>
   );

@@ -8,8 +8,19 @@ a basic web app with user authentication and data fetching
 
 ## 🚀 Technologies Used
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
+- [Next.js 14 (App Router)](https://nextjs.org/docs/getting-started)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [React Query](https://tanstack.com/query/latest/docs/react/overview)
+- [Shadcn](https://ui.shadcn.com/)
 - [Zod](https://zod.dev/)
+
+## Features
+
+- usage of NextJs App Router
+- usage of Server actions (e.g., user sign in) and components
+- usage of cookies and middleware for simple authentication and authorization implementation
+- usage of env variables
+- form validation
+- basic route protection
+- mobile-responsive (albeit being a skeleton for now, I tested on multiple screen sizes)
+- dark and light mode

@@ -32,23 +32,28 @@ const TerritoryList = ({ tree }: { tree: TreeNode[] | string }) => {
 
 const TreeNodeComponent: React.FC<TreeNodeProps> = ({ node, level }) => {
   const indentStyle = {
-    marginLeft: `${level * 20}px`, // Adjust the indentation as needed
+    marginLeft: `${level * 20}px`,
   };
 
   return (
     <Collapsible className="w-[200px] space-y-1">
       <div className="flex items-center justify-between" style={indentStyle}>
         <h4 className="text-sm font-semibold">{node.name}</h4>
-        {node.children && node.children.length > 0 ? (
+        {node.children && node.children.length > 0 && (
           <CollapsibleTrigger asChild>
             <Button variant="ghost" size="sm" className="w-9 p-0">
               <ChevronsUpDown className="h-4 w-4" />
               <span className="sr-only">Toggle</span>
             </Button>
           </CollapsibleTrigger>
-        ) : (
-          <div className="w-9"></div>
         )}
+        {!node.children ||
+          (node.children.length === 0 && (
+            <Button variant="ghost" size="sm" className="w-9 p-0 invisible">
+              <ChevronsUpDown className="h-4 w-4" />
+              <span className="sr-only">Toggle</span>
+            </Button>
+          ))}
       </div>
       {node.children && node.children.length > 0 && (
         <CollapsibleContent className="space-y-1">
